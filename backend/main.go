@@ -1,18 +1,16 @@
 package main
 
-
 import (
+	"net/http"
 
-   "net/http"
+	"github.com/gin-gonic/gin"
 
-
-   "github.com/gin-gonic/gin"
-
-   "backend/config"
-   "backend/controller/users"
-   "backend/controller/genders"
-   "backend/middlewares"
-
+	"backend/config"
+	"backend/controller/exercises"
+    "backend/controller/exercise_activities"
+	"backend/controller/genders"
+	"backend/controller/users"
+	"backend/middlewares"
 )
 
 
@@ -65,9 +63,16 @@ func main() {
 
    }
 
-
+   // Gender Route
    r.GET("/genders", genders.GetAll)
 
+   // Exercise Records Route
+   r.GET("/exercises", exercises.GetAll)
+   r.GET("/exercise_activity/:id", exercise_activities.GetExerciseActivitiesbyID)
+
+   // Exercise Activity Route
+   r.POST("/exercise_activity", exercise_activities.CreateExerciseActivity)      // Create
+   r.PUT("/exercise_activity/:id", exercise_activities.UpdateExerciseActivitybyID)   // Update
 
    r.GET("/", func(c *gin.Context) {
 

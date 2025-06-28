@@ -10,7 +10,7 @@ type ExerciseType struct {
 
 	gorm.Model
 
-	TypeName string
+	TypeName 	string 	`json:"type_name"`
 
 }
 
