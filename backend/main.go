@@ -73,10 +73,11 @@ func main() {
    // Exercise Activity Route
    r.POST("/exercise_activity", exercise_activities.CreateExerciseActivity)      // Create
    r.PUT("/exercise_activity/:id", exercise_activities.UpdateExerciseActivitybyID)   // Update
+   r.DELETE("/exercise_activity/:id", exercise_activities.DeleteExerciseActivitybyID) // Delete
 
    r.GET("/", func(c *gin.Context) {
 
-       c.String(http.StatusOK, "API RUNNING... PORT: %s", PORT)
+    c.String(http.StatusOK, "API RUNNING... PORT: %s", PORT)
 
    })
 

@@ -98,39 +98,59 @@ func CreateExerciseActivity (c *gin.Context) {
 func UpdateExerciseActivitybyID(c *gin.Context) {
 
 	fmt.Print("Updating Exercise Activity")
-	db := config.DB()
-
+	
 	// รับ ExerciseActivityID จากพารามิเตอร์  URL
 	id := c.Param("id")
 	var activity entity.ExerciseActivity
-	if err := db.First(&activity, id).Error; err != nil {
+	if err := c.ShouldBindJSON(&activity); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+
+	db := config.DB()
+
+	var existingactivity entity.ExerciseActivity
+	if err := db.First(&existingactivity, id).Error; err != nil {
 		fmt.Println("Record not found:", err)
-		c.JSON(http.StatusNotFound, gin.H{"error": "TakeAHistory record not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "Exercise Activity record not found"})
 		return
 	}
 
-	// กำหนดโครงสร้างข้อมูลที่ได้รับจาาก Request
-	var input struct {
-		ActivityName  string    `json:"activity_name"`           // ชื่อกิจกรรมการออกกำลังกาย
-    	UserID        uint      `json:"user_id"`
-    	Date          time.Time `json:"date"`                    // วันที่
-    	Duration      int       `json:"duration"`                // เวลา (นาที) ที่ User ออกกำลังกาย
-    	CaloriesBurnd int       `json:"calories_burnd"`           // แคลอรีที่เผา
-		UserId 		  uint
-		ExerciseID uint
-	}
 
-	// ดึงข้อมูล JSON จากคำขอ (Request) และตรวจสอบความถูกต้อง
-	if err := c.ShouldBindJSON(&input); err != nil {
-		fmt.Println("Error binding JSON:", err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input data", "details": err.Error()})
+	existingactivity.ActivityName = activity.ActivityName
+	existingactivity.UserID = activity.UserID
+	existingactivity.Date = activity.Date
+	existingactivity.Duration = activity.Duration
+	existingactivity.CaloriesBurnd = activity.CaloriesBurnd
+	existingactivity.UserId = activity.UserId
+	existingactivity.ExerciseID = activity.ExerciseID
+
+	if err := db.Save(&existingactivity).Error; err != nil {
+		fmt.Println("Error updating medical record:", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not update medical record", "details": err.Error()})
 		return
 	}
 
-	// อัปเดต Fields ที่ส่งมาใน Request
-	if input.ActivityName != "" {
-		activity.ActivityName = input.ActivityName
-	}
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Exercise Activity updated and  handled successfully",
+		"data":    existingactivity,
+	})
+}
 
+func DeleteExerciseActivitybyID(c *gin.Context) {
+
+	fmt.Print("Deleting Exercise Activity")
 	
+	// รับ ExerciseActivityID จากพารามิเตอร์  URL
+	id := c.Param("id")
+
+	db := config.DB()
+
+	if tx := db.Exec("DELETE FROM exercise_activities WHERE id = ?", id); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "id not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Deleted successful"})
 }
