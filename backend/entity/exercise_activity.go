@@ -11,14 +11,15 @@ type ExerciseActivity struct {   //กิจกรรมที่ User ออก
 
 	gorm.Model
 
-	ActivityName string    //ชื่อกิจกรรมการออกกำลังกาย
-	UserID uint
-	Date time.Time          //วันที่
-	Duration int  //เวลาที่ User ออกกำลังกาย
-	CaloriesBurnd int   //(คำนวณ = calories_burned_per_minute * duration) แคลที่เผา
-	UserId uint
-	User *Users `gorm:"foreignKey: user_id" json:"user"`         //(Foreign Key to User)
+	ActivityName  string    `json:"activity_name"`           // ชื่อกิจกรรมการออกกำลังกาย
+    UserID        uint      `json:"user_id"`
+    Date          time.Time `json:"date"`                    // วันที่
+    Duration      int       `json:"duration"`                // เวลา (นาที) ที่ User ออกกำลังกาย
+    CaloriesBurnd int       `json:"calories_burnd"`           // แคลอรีที่เผา
+	UserId 		  uint
+	User          *Users     `gorm:"foreignKey:UserId"`         //(Foreign Key to User)
 	ExerciseID uint
-	Exercise *Exercise `gorm:"foreignKey: exercise_id" json:"exercise"`             //(Foreign Key to Exercise)
+	Exercise      *Exercise  `gorm:"foreignKey:ExerciseID"`             //(Foreign Key to Exercise)
 	
 }
+	
