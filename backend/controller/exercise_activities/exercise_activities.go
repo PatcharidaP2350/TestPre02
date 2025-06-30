@@ -46,6 +46,30 @@ func GetExerciseActivitiesbyID(c *gin.Context) {
 
 }
 
+func GetExerciseActivitiesbyUserID(c *gin.Context) {
+    userID := c.Param("user_id")
+
+    var activities []entity.ExerciseActivity
+
+    db := config.DB()
+
+    result := db.Preload("Exercise").Preload("User").
+        Where("user_id = ?", userID).Find(&activities)
+
+    if result.Error != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+        return
+    }
+
+    if len(activities) == 0 {
+        c.JSON(http.StatusNoContent, gin.H{"message": "No exercise activities found for this user"})
+        return
+    }
+
+    c.JSON(http.StatusOK, activities)
+}
+
+
 
 func CreateExerciseActivity (c *gin.Context) {
 

@@ -125,14 +125,49 @@ exercise := &entity.Exercise{
 
 db.FirstOrCreate(exercise, &entity.Exercise{
     ExerciseName: "Running",
-})
+}) // กิจกรรมประเภท Cardio (ExerciseTypeId = 1)
 
-// สมมุติว่าคุณมี User ที่ ID = 1 และ Exercise ที่ ID = 1 อยู่แล้วในฐานข้อมูล
+exercise2 := &entity.Exercise{
+    ExerciseName:           "Swimming",
+    ExerciseTypeId:         1,
+    CaloriesBurndPerMinute: 8,
+}
+db.FirstOrCreate(exercise2, &entity.Exercise{ExerciseName: "Swimming"})
 
-activityDate, _ := time.Parse("2006-01-02", "2025-05-20")
+exercise3 := &entity.Exercise{
+    ExerciseName:           "Dancing",
+    ExerciseTypeId:         1,
+    CaloriesBurndPerMinute: 6,
+}
+db.FirstOrCreate(exercise3, &entity.Exercise{ExerciseName: "Dancing"})
+
+exercise4 := &entity.Exercise{
+    ExerciseName:           "Cycling",
+    ExerciseTypeId:         1,
+    CaloriesBurndPerMinute: 7,
+}
+db.FirstOrCreate(exercise4, &entity.Exercise{ExerciseName: "Cycling"})
+
+exercise5 := &entity.Exercise{
+    ExerciseName:           "Climbing stairs or walking uphill",
+    ExerciseTypeId:         1,
+    CaloriesBurndPerMinute: 9,
+}
+db.FirstOrCreate(exercise5, &entity.Exercise{ExerciseName: "Climbing stairs or walking uphill"})
+
+exercise7 := &entity.Exercise{
+    ExerciseName:           "Playing tennis or basketball",
+    ExerciseTypeId:         1,
+    CaloriesBurndPerMinute: 8,
+}
+db.FirstOrCreate(exercise7, &entity.Exercise{ExerciseName: "Playing tennis or basketball"})
+
+
+
+activityDate, _ := time.Parse("2006-01-02", "2025-05-20") // สมมุติว่าคุณมี User ที่ ID = 1 และ Exercise ที่ ID = 1 อยู่แล้วในฐานข้อมูล
 
 exerciseActivity := &entity.ExerciseActivity{
-    ActivityName:     "Morning Run",
+    ActivityName:     "Running",
     UserID:           1, // รหัสของผู้ใช้งานที่ออกกำลังกาย
     ExerciseID:       1, // รหัสของประเภทการออกกำลังกาย เช่น Running
     Date:             activityDate,
@@ -141,7 +176,7 @@ exerciseActivity := &entity.ExerciseActivity{
 }
 
 db.FirstOrCreate(exerciseActivity, &entity.ExerciseActivity{
-    ActivityName: "Morning Run",
+    ActivityName: "Running",
     UserID:       1,
     Date:         activityDate,
 })

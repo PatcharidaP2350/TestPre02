@@ -67,10 +67,13 @@ func main() {
    r.GET("/genders", genders.GetAll)
 
    // Exercise Records Route
-   r.GET("/exercises", exercises.GetAll)
-   r.GET("/exercise_activity/:id", exercise_activities.GetExerciseActivitiesbyID)
+   r.GET("/exercises", exercises.ListExercises)
+   
 
    // Exercise Activity Route
+   r.GET("/exercise_activity/:id", exercise_activities.GetExerciseActivitiesbyID)  // Get
+   r.GET("/exercise_activities/user/:user_id", exercise_activities.GetExerciseActivitiesbyUserID)
+
    r.POST("/exercise_activity", exercise_activities.CreateExerciseActivity)      // Create
    r.PUT("/exercise_activity/:id", exercise_activities.UpdateExerciseActivitybyID)   // Update
    r.DELETE("/exercise_activity/:id", exercise_activities.DeleteExerciseActivitybyID) // Delete

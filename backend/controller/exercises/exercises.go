@@ -14,7 +14,7 @@ import (
 )
 
 
-func GetAll(c *gin.Context) {
+func ListExercises(c *gin.Context) {
 
 
    db := config.DB()
